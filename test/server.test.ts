@@ -1,9 +1,11 @@
-import { AppServer } from '../src/server';
-const request = require('supertest');
+import supertest from 'supertest';
 import 'jest';
+
+import { AppServer } from '../src/server';
 
 describe('GET /', () => {
   let app;
+  const request = supertest;
   beforeEach(() => {
     app = new AppServer().getServer();
   });
