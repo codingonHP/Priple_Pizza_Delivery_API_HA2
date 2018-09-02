@@ -1,0 +1,9 @@
+{
+    "database" :{
+        "server": "testhost",
+        "port": 0,
+        "authentication": false,
+        "username": "test",
+        "password": "test"
+    }
+}

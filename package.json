@@ -9,7 +9,7 @@
     "serve": "npm run build && node dist/server.js",
     "watch-node": "nodemon dist/server.js",
     "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
-    "test": "jest --coverage --verbose",
+    "test": "jest --coverage --verbose --colors",
     "watch-test": "npm run test -- --watchAll",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
@@ -40,17 +40,31 @@
       "jsx",
       "json",
       "node"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}"
+    ],
+    "coverageReporters": [
+      "json",
+      "html"
     ]
   },
   "homepage": "https://github.com/codingonHP/Priple_Pizza_Delivery_API_HA2#readme",
   "devDependencies": {
     "@types/chai": "^4.1.4",
     "@types/jest": "^23.3.1",
-    "@types/node": "^10.9.2",
+    "@types/mock-fs": "^3.6.30",
+    "@types/mongodb": "^3.1.4",
+    "@types/node": "^10.9.4",
+    "@types/sinon": "^5.0.2",
     "@types/supertest": "^2.0.5",
     "chai": "^4.1.2",
     "jest": "^23.5.0",
+    "mock-fs": "^4.6.0",
+    "mongodb": "^3.1.4",
     "nodemon": "^1.18.3",
+    "sinon": "^6.1.5",
     "supertest": "^3.1.0",
     "ts-jest": "^23.1.4",
     "tslint": "^5.11.0",
