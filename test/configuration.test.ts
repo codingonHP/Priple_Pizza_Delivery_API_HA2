@@ -126,14 +126,14 @@ describe('Configuration Test', () => {
       try {
         // Act
         await Configuration.getConfiguration('unknown_env');
-        chai.assert.fail('test case failed');
+        chai.assert.fail('test case failed: [should throw exception if config.env.json is missing]');
       } catch (e) {
         // Assert
-        chai.assert.isDefined(e);
+        chai.assert.isTrue((e + '').startsWith('Error: ENOENT, no such file or directory'));
       }
     });
 
-    it('should throw exception if config.env.json is missing', async () => {
+    it('should throw exception if config.json is missing', async () => {
       // Arrange: beforeEach
       mockFs.restore();
 
@@ -146,10 +146,10 @@ describe('Configuration Test', () => {
       try {
         // Act
         await Configuration.getConfiguration();
-        chai.assert.fail('test case failed');
+        chai.assert.fail('test case failed: [should throw exception if config.json is missing]');
       } catch (e) {
         // Assert
-        chai.assert.isDefined(e);
+        chai.assert.isTrue((e + '').startsWith('Error: ENOENT, no such file or directory'));
       }
     });
 
@@ -167,10 +167,10 @@ describe('Configuration Test', () => {
       try {
         // Act
         await Configuration.getConfiguration('test');
-        chai.assert.fail('test case failed');
+        chai.assert.fail('test case failed: [should throw exception if config.env.json is malformed]');
       } catch (e) {
         // Assert
-        chai.assert.isDefined(e);
+        chai.assert.equal('SyntaxError: Unexpected token } in JSON at position 6', e + '');
       }
     });
 
@@ -188,10 +188,10 @@ describe('Configuration Test', () => {
       try {
         // Act
         await Configuration.getConfiguration();
-        chai.assert.fail('test case failed');
+        chai.assert.fail('test case failed: [should throw exception if config.json is malformed]');
       } catch (e) {
         // Assert
-        chai.assert.isDefined(e);
+        chai.assert.equal('SyntaxError: Unexpected token } in JSON at position 6', e + '');
       }
     });
   });
