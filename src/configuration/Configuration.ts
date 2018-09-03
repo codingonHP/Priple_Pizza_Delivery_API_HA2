@@ -15,20 +15,19 @@ export class Configuration implements IConfiguration {
       if (!Configuration.instance) {
         const config = new Configuration();
         try {
-          this.instance = await config.loadConfiguration(env);
-          resolve(this.instance);
-          return;
+          Configuration.instance = await config.loadConfiguration(env);
+          resolve(Configuration.instance);
         } catch (e) {
           reject(e);
-          return;
         }
+      } else {
+        resolve(Configuration.instance);
       }
-      resolve(this.instance);
     });
   }
 
   static reset(): void {
-    this.instance = null;
+    Configuration.instance = null;
   }
 
   private loadConfiguration(env: string): Promise<Configuration> {
@@ -39,6 +38,7 @@ export class Configuration implements IConfiguration {
           reject(err);
           return;
         }
+
         try {
           const baseConfig: Configuration = this.toConfiguration(JSON.parse(configData.toString('utf-8')));
           const config: Configuration = await this.updateWithCurrentEnvironmentConfiguration(
@@ -54,9 +54,9 @@ export class Configuration implements IConfiguration {
   }
 
   private updateWithCurrentEnvironmentConfiguration(
-    baseConfig: any,
+    baseConfig: Configuration,
     env: string,
-  ): Promise<any> {
+  ): Promise<Configuration> {
     const currEnv = env || '';
 
     return new Promise<Configuration>((resolve, reject) => {
@@ -72,8 +72,8 @@ export class Configuration implements IConfiguration {
         }
 
         try {
-          const envConfig: Configuration = JSON.parse(configData.toString('utf-8'));
-          const config: Configuration = this.toConfiguration(Object.assign({}, baseConfig, envConfig));
+          const envConfig: Configuration = this.toConfiguration(JSON.parse(configData.toString('utf-8')));
+          const config: Configuration = Object.assign({}, baseConfig, envConfig);
           resolve(config);
         } catch (e) {
           reject(e);
