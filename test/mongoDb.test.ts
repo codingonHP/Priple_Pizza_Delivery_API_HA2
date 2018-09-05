@@ -91,7 +91,7 @@ describe('MongoDb Test', () => {
             sinon.replace(connection, 'close', mongoCloseFake);
 
             // act
-            db.close();
+            db.close(connection);
 
             // assert
             sinon.assert.called(mongoCloseFake);
@@ -103,7 +103,7 @@ describe('MongoDb Test', () => {
 
             try {
                 // act
-                await db.close();
+                await db.close(undefined);
 
                 // fail this unit test if close did not throw any exception.
                 assert.fail('unit test failed');
@@ -118,11 +118,11 @@ describe('MongoDb Test', () => {
             // arrange: beforeEach
             const fakeConnection = sinon.fake.resolves({ close: () => {}, isConnected: false });
             sinon.replace(MongoClient, 'connect', fakeConnection);
-            await db.connect();
+            const conn = await db.connect();
 
             try {
                 // act
-                await db.close();
+                await db.close(conn);
 
                 // fail this unit test if close did not throw any exception.
                 assert.fail('unit test failed');

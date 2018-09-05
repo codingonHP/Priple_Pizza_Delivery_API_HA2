@@ -43,7 +43,10 @@
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
+      "src/**/*.{js,jsx}",
+      "!/node_modules/",
+      "!test/**/*.{js,ts,jsx}",
+      "!src/**/fake.{js,jsx,ts}"
     ],
     "coverageReporters": [
       "json",

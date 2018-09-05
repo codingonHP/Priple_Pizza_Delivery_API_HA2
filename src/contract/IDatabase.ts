@@ -1,4 +1,4 @@
 export interface IDatabase {
     connect(): Promise<any>;
-    close(): Promise<any>;
+    close(connection: any): Promise<any>;
 }

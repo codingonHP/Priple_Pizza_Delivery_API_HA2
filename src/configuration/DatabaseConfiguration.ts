@@ -4,4 +4,5 @@ export class DatabaseConfiguration {
   authentication: boolean;
   username: string;
   password: string;
+  name: string;
 }
