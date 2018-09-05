@@ -1,0 +1,11 @@
+{
+    "database" :{
+        "server": "localhost",
+        "port": 27017,
+        "authentication": true,
+        "username": "root",
+        "password": "root123456",
+        "name": "pizza"
+    },
+    "environment": "base"
+}

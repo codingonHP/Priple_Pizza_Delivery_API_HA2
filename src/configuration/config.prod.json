@@ -1,0 +1,10 @@
+{
+    "database" :{
+        "server": "productionserver",
+        "port": 12300,
+        "authentication": true,
+        "username": "root",
+        "password": "root123456"
+    },
+    "environment": "production"
+}
