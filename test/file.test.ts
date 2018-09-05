@@ -35,17 +35,7 @@ describe('File Test', () => {
             try {
                 await File.readFileAsyc('src/configuration/not-found-file.txt');
             } catch (e) {
-                chai.assert.isTrue((e + '').startsWith('Error: ENOENT, no such file or directory'));
-            }
-        });
-
-        it('should throw error if buffer.toString() fails', async() => {
-            try {
-                const buffer = new Buffer('text');
-                sinon.stub(buffer, 'toString').throwsException('toString() exception');
-                await File.readFileAsyc('src/configuration/config.json');
-            } catch (e) {
-                chai.assert.equal('Error: EBADF, bad file descriptor', e + '');
+                chai.assert.isDefined(e);
             }
         });
     });
