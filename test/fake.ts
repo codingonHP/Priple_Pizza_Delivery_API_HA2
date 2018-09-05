@@ -55,3 +55,17 @@ class FakeConfiguration implements IConfiguration {
         this.database.name = 'pizza';
     }
 }
+
+export class FakePromise {
+    static resolve(data): Promise<any> {
+        return new Promise((resolve) => {
+            resolve(data);
+        });
+    }
+
+    static reject(err): Promise<any> {
+        return new Promise((resolve, reject) => {
+            reject(err);
+        });
+    }
+}

@@ -1,7 +1,6 @@
-import fs from 'fs';
-
 import { IConfiguration } from './IConfiguration';
 import { DatabaseConfiguration } from './DatabaseConfiguration';
+import { File } from '../util/file';
 
 export class Configuration implements IConfiguration {
   private static instance: Configuration;
@@ -32,53 +31,38 @@ export class Configuration implements IConfiguration {
 
   private loadConfiguration(env: string): Promise<Configuration> {
     const currEnv = env || '';
-    return new Promise<Configuration>((resolve, reject) => {
-      fs.readFile('./src/configuration/config.json', async (err, configData: Buffer) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        try {
-          const baseConfig: Configuration = this.toConfiguration(JSON.parse(configData.toString('utf-8')));
-          const config: Configuration = await this.updateWithCurrentEnvironmentConfiguration(
-            baseConfig,
-            currEnv,
-          );
-          resolve(config);
-        } catch (e) {
-          reject(e);
-        }
-      });
+    return new Promise<Configuration>(async (resolve, reject) => {
+      try {
+        const baseConfigFileContent = await File.readFileAsyc('./src/configuration/config.json');
+        const baseConfig: Configuration = this.toConfiguration(JSON.parse(baseConfigFileContent));
+        const finalConfig: Configuration = await this.updateWithCurrentEnvironmentConfiguration(
+          baseConfig,
+          currEnv,
+        );
+        resolve(finalConfig);
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
-  private updateWithCurrentEnvironmentConfiguration(
-    baseConfig: Configuration,
-    env: string,
-  ): Promise<Configuration> {
+  private updateWithCurrentEnvironmentConfiguration(baseConfig: Configuration, env: string): Promise<Configuration> {
     const currEnv = env || '';
 
-    return new Promise<Configuration>((resolve, reject) => {
-      if (!env) {
+    return new Promise<Configuration>(async(resolve, reject) => {
+      if (!currEnv) {
         resolve(baseConfig);
         return;
       }
 
-      fs.readFile(`./src/configuration/config.${currEnv}.json`, (err, configData: Buffer) => {
-        if (err) {
-          reject(err);
-          return;
-        }
-
-        try {
-          const envConfig: Configuration = this.toConfiguration(JSON.parse(configData.toString('utf-8')));
-          const config: Configuration = Object.assign({}, baseConfig, envConfig);
-          resolve(config);
-        } catch (e) {
-          reject(e);
-        }
-      });
+      try {
+        const envFileContent = await File.readFileAsyc(`./src/configuration/config.${currEnv}.json`);
+        const envConfig: Configuration = this.toConfiguration(JSON.parse(envFileContent));
+        const finalConfig: Configuration = Object.assign({}, baseConfig, envConfig);
+        resolve(finalConfig);
+      } catch (e) {
+        reject(e);
+      }
     });
   }
 
