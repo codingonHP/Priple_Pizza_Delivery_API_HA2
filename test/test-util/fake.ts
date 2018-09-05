@@ -1,6 +1,6 @@
-import { IDatabase } from '../src/contract/IDatabase';
-import { IConfiguration } from '../src/configuration/IConfiguration';
-import { DatabaseConfiguration } from '../src/configuration/DatabaseConfiguration';
+import { IDatabase } from '../../src/contract/IDatabase';
+import { IConfiguration } from '../../src/configuration/IConfiguration';
+import { DatabaseConfiguration } from '../../src/configuration/DatabaseConfiguration';
 
 export class Fake {
     static getFakeDatabase(fakeDbImpl?: IDatabase): IDatabase {

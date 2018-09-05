@@ -2,7 +2,7 @@ import 'jest';
 import chai from 'chai';
 
 import { DataAccess } from '../src/db/DataAccess';
-import { Fake } from './fake';
+import { Fake } from './test-util/fake';
 
 describe('DataAccess Test', () => {
     describe('addRecord', () => {
