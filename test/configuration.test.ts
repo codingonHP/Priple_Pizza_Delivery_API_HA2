@@ -45,7 +45,7 @@ describe('Configuration Test', () => {
         }`;
 
       mockFs({
-        './src/configuration/': {
+        'src/configuration': {
           'config.json': mockConfig,
           'config.prod.json': mockProdConfig,
           'config.test.json': mockTestConfig,
@@ -70,7 +70,7 @@ describe('Configuration Test', () => {
 
     it('should return singleton instance of configuration', async () => {
       // Arrange: beforeEach
-
+      // console.debug(__dirname);
       // Act
       const config1 = await Configuration.getConfiguration();
       const config2 = await Configuration.getConfiguration();
