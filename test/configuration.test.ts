@@ -19,6 +19,10 @@ describe('Configuration Test', () => {
                     "username": "testuser",
                     "password": "testpassword"
                 },
+                "server": {
+                  "host": "localhost",
+                  "port": "1001"
+                },
                 "environment": "test"
             }`;
 
@@ -29,6 +33,10 @@ describe('Configuration Test', () => {
                 "authentication": true,
                 "username": "testuser",
                 "password": "testpassword"
+            },
+            "server": {
+              "host": "localhost",
+              "port": "1001"
             },
             "environment": "production"
         }`;
