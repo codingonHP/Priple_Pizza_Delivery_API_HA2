@@ -6,7 +6,8 @@ export class MongoDb implements IDatabase {
     constructor(private config: Configuration) { }
 
     connect(): Promise<MongoClient> {
-        return MongoClient.connect(this.config.database.server)
+        const connString = `mongodb://${this.config.database.server}:${this.config.database.port}/${this.config.database.server}`;
+        return MongoClient.connect(connString, { useNewUrlParser: true })
         .then((databaseConnection: MongoClient) => {
             return databaseConnection;
         },    (error) => {

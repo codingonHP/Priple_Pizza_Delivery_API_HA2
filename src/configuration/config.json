@@ -7,5 +7,9 @@
         "password": "root123456",
         "name": "pizza"
     },
+    "server": {
+        "host": "localhost",
+        "port": "3001"
+    },
     "environment": "base"
 }

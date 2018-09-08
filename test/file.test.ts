@@ -1,7 +1,6 @@
 import 'jest';
 import chai from 'chai';
 import mockFs from 'mock-fs';
-import sinon from 'sinon';
 import { File } from '../src/util/file';
 
 describe('File Test', () => {
