@@ -4,6 +4,11 @@
 "services": [],
 "script": [
 "npm run build",
-"npm run test"
-]
+"npm run test",
+],
+language: node_js
+scripts:
+  - npm install codecov -g
+after_success:
+  - codecov
 }

@@ -1,11 +1,10 @@
 export class ControllerFactory {
-    static getController(name: string, exceptionController: string): any {
+    static getController(name: string): any {
         try {
             const controllerModule = require(`../../controllers/${name}`);
             return this.instantiateController(name, controllerModule);
         } catch (e) {
-            const errControllerModule = require(`../../controllers/${exceptionController}`);
-            return this.instantiateController(exceptionController, errControllerModule);
+            throw(e);
         }
     }
 
