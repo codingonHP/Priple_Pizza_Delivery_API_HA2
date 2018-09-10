@@ -5,7 +5,7 @@ import { Configuration } from './configuration/Configuration';
 
 export class Application {
     constructor() {
-        AppRouter.registerRoutes(ApplicationRoutes.APP_ROUTES, ApplicationRoutes.APP_EXCEPTION_ROUTES);
+        AppRouter.registerRoutes(ApplicationRoutes.APP_ROUTES);
     }
 
     async start(): Promise<void> {

@@ -15,6 +15,7 @@ export class ApiController {
     }
 
     ok(res: HttpResponse, responseText?: string) {
+        res.response.setHeader('Content-Type', 'text/plain');
         res.response.writeHead(200);
         if (responseText) {
             res.response.write(responseText, 'utf-8');

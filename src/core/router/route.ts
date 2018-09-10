@@ -9,11 +9,3 @@ export class Route {
         public middlewares: IMiddleware[],
     ) { }
 }
-
-export class ExceptionRoute {
-    constructor (
-        public statusCode: number,
-        public controller: string,
-        public middlewares: IMiddleware[],
-    ) { }
-}
