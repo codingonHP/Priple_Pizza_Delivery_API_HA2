@@ -1,7 +1,6 @@
 export class ControllerFactory {
     static getController(name: string, exceptionController: string): any {
         try {
-            console.debug(__dirname);
             const controllerModule = require(`../../controllers/${name}`);
             return this.instantiateController(name, controllerModule);
         } catch (e) {

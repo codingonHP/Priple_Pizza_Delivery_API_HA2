@@ -13,9 +13,9 @@ export class AppServer {
   }
 
   private initServer(): Server {
-    return createServer((req: IncomingMessage, res: ServerResponse) => {
-      const reqHandler = new RequestHandler();
-      reqHandler.handleRequest(req, res);
+    return createServer(async (request: IncomingMessage, response: ServerResponse) => {
+      const reqHandler = new RequestHandler(request, response);
+      await reqHandler.handleRequest();
     });
   }
 
