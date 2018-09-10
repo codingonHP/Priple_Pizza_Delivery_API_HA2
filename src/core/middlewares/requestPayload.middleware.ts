@@ -50,6 +50,6 @@ export class RequestPayloadMiddleware implements IMiddleware{
         req.request.connection.destroy();
         res.response.writeHead(413, { 'Content-Type': 'text/plain' });
         res.response.end();
-        reject();
+        reject('request terminated due to flood request');
     }
 }
