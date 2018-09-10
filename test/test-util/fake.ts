@@ -1,6 +1,6 @@
-import { IDatabase } from '../src/contract/IDatabase';
-import { IConfiguration } from '../src/configuration/IConfiguration';
-import { DatabaseConfiguration } from '../src/configuration/DatabaseConfiguration';
+import { IDatabase } from '../../src/contract/IDatabase';
+import { IConfiguration } from '../../src/configuration/IConfiguration';
+import { DatabaseConfiguration } from '../../src/configuration/DatabaseConfiguration';
 
 export class Fake {
     static getFakeDatabase(fakeDbImpl?: IDatabase): IDatabase {
@@ -27,7 +27,7 @@ class FakeDatabase implements IDatabase {
                         return {
                             collection: (collectionName) => {
                                 return {
-                                    insert: (record, cb) => {
+                                    insertOne: (record, cb) => {
                                         if (record) {
                                             cb(null, `${record.data} added to ${collectionName} collection in ${db} database`);
                                         } else {
@@ -53,6 +53,8 @@ class FakeConfiguration implements IConfiguration {
 
     constructor() {
         this.database.name = 'pizza';
+        this.database.port = '1001';
+        this.database.server = 'localhost';
     }
 }
 

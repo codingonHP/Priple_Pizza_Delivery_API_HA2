@@ -13,6 +13,7 @@ describe('MongoDb Test', () => {
             // arrange
             const fakeConfig = sinon.fake.returns({ database: {
                 server: 'fakehost',
+                port: '1001',
             }});
             sinon.replace(Configuration, 'getConfiguration', fakeConfig);
             db = new MongoDb(await Configuration.getConfiguration());
@@ -46,7 +47,7 @@ describe('MongoDb Test', () => {
             await db.connect();
 
             // assert
-            sinon.assert.calledWithExactly(fakeConnection, 'fakehost');
+            sinon.assert.calledWithExactly(fakeConnection, 'mongodb://fakehost:1001/fakehost', { useNewUrlParser: true });
         });
 
         it('should throw exception if MongoClient.connect fails', async () => {

@@ -1,12 +1,14 @@
 import { IConfiguration } from './IConfiguration';
 import { DatabaseConfiguration } from './DatabaseConfiguration';
 import { File } from '../util/file';
+import { Server } from './Server';
 
 export class Configuration implements IConfiguration {
   private static instance: Configuration;
   private constructor() {}
 
   database: DatabaseConfiguration = new DatabaseConfiguration();
+  server: Server = new Server();
   environment: string = '';
 
   static async getConfiguration(env?: string): Promise<Configuration> {

@@ -4,13 +4,12 @@ import sinon from 'sinon';
 
 import { Configuration } from '../src/configuration/Configuration';
 import { File } from '../src/util/file';
-import { FakePromise } from './fake';
+import { FakePromise } from './test-util/fake';
 
 describe('Configuration Test', () => {
   describe('getConfiguration', () => {
     let mockConfig;
     let mockProdConfig;
-    let mockTestConfig;
     beforeEach(() => {
       mockConfig = `{
                 "database" :{
@@ -19,6 +18,10 @@ describe('Configuration Test', () => {
                     "authentication": true,
                     "username": "testuser",
                     "password": "testpassword"
+                },
+                "server": {
+                  "host": "localhost",
+                  "port": "1001"
                 },
                 "environment": "test"
             }`;
@@ -31,21 +34,12 @@ describe('Configuration Test', () => {
                 "username": "testuser",
                 "password": "testpassword"
             },
+            "server": {
+              "host": "localhost",
+              "port": "1001"
+            },
             "environment": "production"
         }`;
-
-      mockTestConfig = `{
-            "database" :{
-                "server": "test",
-                "port": 1000,
-                "authentication": true,
-                "username": "test",
-                "password": "test"
-            },
-            "environment": "test",
-            "extra-section": "value"
-        }`;
-
     });
 
     afterEach(() => {

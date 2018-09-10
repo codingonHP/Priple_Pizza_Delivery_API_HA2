@@ -12,7 +12,7 @@ export class DataAccess implements IDbOperation {
             const conn = <MongoClient>await this.database.connect();
             const db = conn.db(this.configuration.database.name);
             const userCollection = db.collection('user');
-            userCollection.insert(data, (err, result) => {
+            userCollection.insertOne(data, (err, result) => {
                 if (err) {
                     reject(err); return;
                 }
