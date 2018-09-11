@@ -1,6 +1,6 @@
 import 'jest';
 import chai from 'chai';
-import sinon from 'sinon';
+import sinon, { SinonSandbox } from 'sinon';
 
 import { Configuration } from '../src/configuration/Configuration';
 import { File } from '../src/util/file';
@@ -10,6 +10,7 @@ describe('Configuration Test', () => {
   describe('getConfiguration', () => {
     let mockConfig;
     let mockProdConfig;
+    let sandbox: SinonSandbox;
     beforeEach(() => {
       mockConfig = `{
                 "database" :{
@@ -40,16 +41,18 @@ describe('Configuration Test', () => {
             },
             "environment": "production"
         }`;
+
+        sandbox = sinon.createSandbox();
     });
 
     afterEach(() => {
       Configuration.reset();
-      sinon.restore();
+      sandbox.restore();
     });
 
     it('should load base configuration if environment is not set', async () => {
       // Arrange: beforeEach
-      sinon.stub(File, 'readFileAsyc').returns(FakePromise.resolve(mockConfig));
+      sandbox.stub(File, 'readFileAsyc').returns(FakePromise.resolve(mockConfig));
 
       // Act
       const config = await Configuration.getConfiguration();
@@ -60,7 +63,7 @@ describe('Configuration Test', () => {
 
     it('should return singleton instance of configuration', async () => {
       // Arrange: beforeEach
-      sinon.stub(File, 'readFileAsyc').returns(FakePromise.resolve(mockConfig));
+      sandbox.stub(File, 'readFileAsyc').returns(FakePromise.resolve(mockConfig));
 
       // Act
       const config1 = await Configuration.getConfiguration();
@@ -72,7 +75,7 @@ describe('Configuration Test', () => {
 
     it('should return configuration for environment if environment is set', async () => {
       // Arrange: beforeEach
-      sinon.stub(File, 'readFileAsyc').returns(FakePromise.resolve(mockProdConfig));
+      sandbox.stub(File, 'readFileAsyc').returns(FakePromise.resolve(mockProdConfig));
 
       // Act
       const config = await Configuration.getConfiguration('prod');
@@ -83,7 +86,7 @@ describe('Configuration Test', () => {
 
     it('should not throw exception if section is missing in config.json', async () => {
       // Arrange: beforeEach
-      sinon.stub(File, 'readFileAsyc').returns(FakePromise.resolve(`{}`));
+      sandbox.stub(File, 'readFileAsyc').returns(FakePromise.resolve(`{}`));
 
       // Act
       const config = await Configuration.getConfiguration();
@@ -96,7 +99,7 @@ describe('Configuration Test', () => {
 
     it('should not throw exception if extra section is present in config.json', async () => {
       // Arrange: beforeEach
-      sinon.stub(File, 'readFileAsyc').returns(FakePromise.resolve(`{"extra-section": "value"}`));
+      sandbox.stub(File, 'readFileAsyc').returns(FakePromise.resolve(`{"extra-section": "value"}`));
 
       // Act
       const config = await Configuration.getConfiguration('test');
@@ -109,7 +112,7 @@ describe('Configuration Test', () => {
 
     it('should throw exception if config.env.json is missing', async () => {
       // Arrange: beforeEach
-      sinon.stub(File, 'readFileAsyc').returns(FakePromise.reject(`Error: ENOENT, no such file or directory`));
+      sandbox.stub(File, 'readFileAsyc').returns(FakePromise.reject(`Error: ENOENT, no such file or directory`));
 
       try {
         // Act
@@ -123,7 +126,7 @@ describe('Configuration Test', () => {
 
     it('should throw exception if config.env.json is malformed', async () => {
       // Arrange: beforeEach
-      const fakeFsStub = sinon.stub(File, 'readFileAsyc');
+      const fakeFsStub = sandbox.stub(File, 'readFileAsyc');
       fakeFsStub.withArgs('./src/configuration/config.json').returns(mockConfig);
       fakeFsStub.withArgs('./src/configuration/config.test.json').returns(FakePromise.resolve(`{"key"}`));
 
@@ -139,7 +142,7 @@ describe('Configuration Test', () => {
 
     it('should throw exception if config.json is malformed', async () => {
       // Arrange: beforeEach
-      sinon.stub(File, 'readFileAsyc').returns(FakePromise.resolve(`{"key"}`));
+      sandbox.stub(File, 'readFileAsyc').returns(FakePromise.resolve(`{"key"}`));
 
       try {
         // Act
