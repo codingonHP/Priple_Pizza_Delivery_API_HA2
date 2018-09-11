@@ -42,7 +42,7 @@ describe('Configuration Test', () => {
             "environment": "production"
         }`;
 
-        sandbox = sinon.sandbox.create();
+        sandbox = sinon.createSandbox();
     });
 
     afterEach(() => {
