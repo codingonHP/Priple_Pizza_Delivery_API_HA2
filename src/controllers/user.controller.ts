@@ -29,8 +29,7 @@ export class UserController extends ApiController {
     }
 
     async delete(req: HttpRequest, res: HttpResponse): Promise<void> {
-        console.debug('delete user controller');
-        const id = <string>req.body.id;
+        const id = <string>req.query.find(q => q.key === 'id').value;
         const deleteResult = await this.userBusiness.deleteUserAsync(id);
         if (deleteResult) {
             this.deleted(res);

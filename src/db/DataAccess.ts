@@ -1,6 +1,6 @@
 import { IDbOperation } from '../contract/IDbOperation';
 import { IDatabase } from '../contract/IDatabase';
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import { IConfiguration } from '../configuration/IConfiguration';
 
 export class DataAccess implements IDbOperation {
@@ -29,8 +29,7 @@ export class DataAccess implements IDbOperation {
         return new Promise(async (resolve, reject) => {
             const conn = <MongoClient>await this.database.connect();
             const db = conn.db(this.configuration.database.name);
-            const userCollection = db.collection('user');
-            userCollection.findOneAndDelete((u: any) => u.id === id, (err, result) => {
+            db.collection('user').deleteOne({ _id: new ObjectId(id) }, (err, result) => {
                 if (err) {
                     reject(err);
                     this.database.close(conn);

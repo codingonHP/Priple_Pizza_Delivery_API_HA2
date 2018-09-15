@@ -14,7 +14,7 @@ export class ApiController {
     }
 
     deleted(res: HttpResponse) {
-        res.response.writeHead(201);
+        res.response.writeHead(204);
         res.response.end();
     }
 

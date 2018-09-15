@@ -6,6 +6,7 @@ import { Route } from '../router/route';
 import { IMiddleware } from '../middlewares/IMiddleware';
 import { IncomingMessage, ServerResponse } from 'http';
 import { Configuration } from '../../configuration/Configuration';
+import { UrlParser } from '../router/url.parser';
 
 export class RequestHandler {
     private httpRequest: HttpRequest;
@@ -22,12 +23,13 @@ export class RequestHandler {
         if (route) {
             controllerName = route.controller;
         } else {
-            throw('RouteNotFound');
+            throw(`RouteNotFound: ${this.httpRequest.request.method} : ${this.httpRequest.request.url}`);
         }
 
         const controller = ControllerFactory.getController(controllerName, config);
         const action = controller[this.httpRequest.request.method.toLowerCase()].bind(controller);
         await this.runMiddlewares(route, this.httpRequest, this.httpResponse);
+        this.httpRequest.query = UrlParser.parseUrl(route.url, this.httpRequest.request.url).queryParam;
         action(this.httpRequest, this.httpResponse);
     }
 

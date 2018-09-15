@@ -19,7 +19,7 @@ export class ApplicationRoutes {
         url: '/api/users/:id',
         method: HttpRequestMethod.DELETE,
         controller: 'user.controller',
-        middlewares: [new RequestPayloadMiddleware()],
+        middlewares: [],
     },
     ];
 }
