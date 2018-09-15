@@ -20,20 +20,19 @@ describe('DataAccess Test', () => {
 
         });
 
-        it('should throw error if insert fails', async () => {
+        it('should throw error if insert fails', async (done) => {
             // Arrange
             const fakeDb = Fake.getFakeDatabase();
             const fakeConfig = Fake.getFakeConfiguration();
             const db = new DataAccess(fakeConfig, fakeDb);
 
-            try {
+            chai.assert.throws(() => {
                 // Act
-                await db.addRecord(null);
-                chai.assert.fail('throw exception', 'did not throw exception', 'test case failed: [should throw error if insert fails]');
-            } catch (resp) {
-                // Assert
-                chai.assert.equal('failed to insert data', resp.err);
-            }
+                db.addRecord(null).catch((e) => {
+                    chai.assert.equal(e.err, 'failed to insert data');
+                    done();
+                });
+            });
         });
 
     });

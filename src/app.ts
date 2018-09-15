@@ -9,8 +9,8 @@ export class Application {
     }
 
     async start(): Promise<void> {
-        const appServer = new AppServer();
         const config = await Configuration.getConfiguration();
+        const appServer = new AppServer(config);
         appServer.startServer(config.server.host, config.server.port);
     }
 }

@@ -1,11 +1,20 @@
 import { HttpResponse } from '../core/server/httpResponse';
+import { Configuration } from '../configuration/Configuration';
 
 export class ApiController {
+
+    constructor(protected config: Configuration) { }
+
     created(res: HttpResponse, responseText?: string) {
         res.response.writeHead(201);
         if (responseText) {
             res.response.write(responseText, 'utf-8');
         }
+        res.response.end();
+    }
+
+    deleted(res: HttpResponse) {
+        res.response.writeHead(201);
         res.response.end();
     }
 

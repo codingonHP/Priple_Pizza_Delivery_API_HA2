@@ -1,16 +1,18 @@
+import { Configuration } from '../../configuration/Configuration';
+
 export class ControllerFactory {
-    static getController(name: string): any {
+    static getController(name: string, config: Configuration): any {
         try {
             const controllerModule = require(`../../controllers/${name}`);
-            return this.instantiateController(name, controllerModule);
+            return this.instantiateController(name, controllerModule, config);
         } catch (e) {
             throw(e);
         }
     }
 
-    private static instantiateController(name: string, module: any) {
+    private static instantiateController(name: string, module: any, config: Configuration) {
         const controllerClassName = this.convertToTitleCase(name);
-        return new module[controllerClassName]();
+        return new module[controllerClassName](config);
     }
 
     private static convertToTitleCase(value: string): string {

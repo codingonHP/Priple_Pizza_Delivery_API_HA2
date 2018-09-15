@@ -14,10 +14,31 @@ export class DataAccess implements IDbOperation {
             const userCollection = db.collection('user');
             userCollection.insertOne(data, (err, result) => {
                 if (err) {
-                    reject(err); return;
+                    reject(err);
+                    this.database.close(conn);
+                    return;
                 }
 
                 resolve(result);
+                this.database.close(conn);
+            });
+        });
+    }
+
+    deleteRecord(id: string): Promise<any> {
+        return new Promise(async (resolve, reject) => {
+            const conn = <MongoClient>await this.database.connect();
+            const db = conn.db(this.configuration.database.name);
+            const userCollection = db.collection('user');
+            userCollection.findOneAndDelete((u: any) => u.id === id, (err, result) => {
+                if (err) {
+                    reject(err);
+                    this.database.close(conn);
+                    return;
+                }
+
+                resolve(result);
+                this.database.close(conn);
             });
         });
     }

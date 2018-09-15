@@ -110,48 +110,49 @@ describe('Configuration Test', () => {
       chai.assert.doesNotThrow(Configuration.getConfiguration);
     });
 
-    it('should throw exception if config.env.json is missing', async () => {
+    it('should throw exception if config.env.json is missing', async (done) => {
       // Arrange: beforeEach
-      sandbox.stub(File, 'readFileAsyc').returns(FakePromise.reject(`Error: ENOENT, no such file or directory`));
+      sandbox.stub(File, 'readFileAsyc').returns(FakePromise.reject(new Error(`Error: ENOENT, no such file or directory`)));
 
-      try {
+      chai.assert.throws(() => {
         // Act
-        await Configuration.getConfiguration('unknown_env');
-        chai.assert.fail('test case failed: [should throw exception if config.env.json is missing]');
-      } catch (e) {
-        // Assert
-        chai.assert.isTrue((e + '').startsWith('Error: ENOENT, no such file or directory'));
-      }
+        Configuration.getConfiguration('unknown_env').catch((e) => {
+          chai.assert.instanceOf(e, Error);
+          chai.assert.equal(e.message, 'Error: ENOENT, no such file or directory');
+          done();
+        });
+      });
     });
 
-    it('should throw exception if config.env.json is malformed', async () => {
+    it('should throw exception if config.env.json is malformed', async (done) => {
       // Arrange: beforeEach
       const fakeFsStub = sandbox.stub(File, 'readFileAsyc');
       fakeFsStub.withArgs('./src/configuration/config.json').returns(mockConfig);
       fakeFsStub.withArgs('./src/configuration/config.test.json').returns(FakePromise.resolve(`{"key"}`));
 
-      try {
+      chai.assert.throws(() => {
         // Act
-        await Configuration.getConfiguration('test');
-        chai.assert.fail('test case failed: [should throw exception if config.env.json is malformed]');
-      } catch (e) {
-        // Assert
-        chai.assert.equal('SyntaxError: Unexpected token } in JSON at position 6', e + '');
-      }
+        Configuration.getConfiguration('test').catch((e) => {
+          chai.assert.instanceOf(e, SyntaxError);
+          chai.assert.isTrue(e.toString().startsWith('SyntaxError: Unexpected token } in JSON'));
+          done();
+        });
+      });
     });
 
-    it('should throw exception if config.json is malformed', async () => {
+    it('should throw exception if config.json is malformed', async (done) => {
       // Arrange: beforeEach
       sandbox.stub(File, 'readFileAsyc').returns(FakePromise.resolve(`{"key"}`));
 
-      try {
-        // Act
-        await Configuration.getConfiguration();
-        chai.assert.fail('test case failed: [should throw exception if config.json is malformed]');
-      } catch (e) {
-        // Assert
-        chai.assert.equal('SyntaxError: Unexpected token } in JSON at position 6', e + '');
-      }
+      chai.assert.throws(() => {
+         // Act
+          Configuration.getConfiguration().catch((e) => {
+           chai.assert.instanceOf(e, SyntaxError);
+           chai.assert.isTrue(e.toString().startsWith('SyntaxError: Unexpected token } in JSON'));
+           done();
+          });
+      });
+
     });
   });
 });
