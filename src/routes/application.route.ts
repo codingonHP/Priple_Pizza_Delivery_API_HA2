@@ -21,5 +21,11 @@ export class ApplicationRoutes {
         controller: 'user.controller',
         middlewares: [],
     },
+    {
+        url: '/api/users/:id',
+        method: HttpRequestMethod.PUT,
+        controller: 'user.controller',
+        middlewares: [new RequestPayloadMiddleware()],
+    },
     ];
 }

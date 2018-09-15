@@ -28,6 +28,21 @@ export class UserController extends ApiController {
         }
     }
 
+    async put(req: HttpRequest, res: HttpResponse): Promise<void> {
+        const id = <string>req.query.find(q => q.key === 'id').value;
+        const userModel = new UserModel();
+        userModel.name = <string>req.body.name;
+        userModel.email = <string>req.body.email;
+        userModel.address = <string>req.body.address;
+        const updateResult = await this.userBusiness.updateUserAsync(id, userModel);
+        if (updateResult) {
+            this.created(res, JSON.stringify(userModel));
+        } else {
+            res.response.writeHead(500);
+            res.response.end();
+        }
+    }
+
     async delete(req: HttpRequest, res: HttpResponse): Promise<void> {
         const id = <string>req.query.find(q => q.key === 'id').value;
         const deleteResult = await this.userBusiness.deleteUserAsync(id);
