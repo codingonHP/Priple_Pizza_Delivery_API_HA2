@@ -5,7 +5,7 @@ import { HttpResponse } from '../server/httpResponse';
 import { Route } from '../router/route';
 import { IMiddleware } from '../middlewares/IMiddleware';
 import { IncomingMessage, ServerResponse } from 'http';
-import { Configuration } from '../../configuration/Configuration';
+import { IConfiguration } from '../../configuration/IConfiguration';
 import { UrlParser } from '../router/url.parser';
 
 export class RequestHandler {
@@ -17,7 +17,7 @@ export class RequestHandler {
         this.httpResponse = new HttpResponse(response);
     }
 
-    async handleRequest(config: Configuration) {
+    async handleRequest(config: IConfiguration) {
         let controllerName = '';
         const route = AppRouter.findRoute(this.httpRequest.request.method, this.httpRequest.request.url);
         if (route) {

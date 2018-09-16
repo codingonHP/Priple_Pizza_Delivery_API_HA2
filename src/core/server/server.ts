@@ -1,11 +1,11 @@
 import { Server, createServer, IncomingMessage, ServerResponse } from 'http';
 import { RequestHandler } from '../handlers/requestHandler';
-import { Configuration } from '../../configuration/Configuration';
+import { IConfiguration } from '../../configuration/IConfiguration';
 
 export class AppServer {
   private server: Server;
 
-  constructor(config: Configuration) {
+  constructor(config: IConfiguration) {
     this.server = this.initServer(config);
   }
 
@@ -13,7 +13,7 @@ export class AppServer {
     return this.server;
   }
 
-  private initServer(config: Configuration): Server {
+  private initServer(config: IConfiguration): Server {
     return createServer(async (request: IncomingMessage, response: ServerResponse) => {
       const reqHandler = new RequestHandler(request, response);
       await reqHandler.handleRequest(config);

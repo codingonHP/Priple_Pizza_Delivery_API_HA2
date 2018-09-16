@@ -1,7 +1,7 @@
-import { Configuration } from '../../configuration/Configuration';
+import { IConfiguration } from '../../configuration/IConfiguration';
 
 export class ControllerFactory {
-    static getController(name: string, config: Configuration): any {
+    static getController(name: string, config: IConfiguration): any {
         try {
             const controllerModule = require(`../../controllers/${name}`);
             return this.instantiateController(name, controllerModule, config);
@@ -10,7 +10,7 @@ export class ControllerFactory {
         }
     }
 
-    private static instantiateController(name: string, module: any, config: Configuration) {
+    private static instantiateController(name: string, module: any, config: IConfiguration) {
         const controllerClassName = this.convertToTitleCase(name);
         return new module[controllerClassName](config);
     }
