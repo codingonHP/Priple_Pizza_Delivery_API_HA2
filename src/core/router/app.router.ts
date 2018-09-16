@@ -1,5 +1,6 @@
 import { Route } from './route';
 import { HttpRequestMethod } from './httpRequestMethod.enum';
+import { UrlParser } from './url.parser';
 
 export class AppRouter {
     private static routes: Route[] = [];
@@ -8,8 +9,15 @@ export class AppRouter {
     }
 
     static findRoute(method: string, url: string): Route {
-        const foundRoute = this.routes.find(route => route.method === this.getMethod(method) && route.url === url);
-        return foundRoute;
+        const verbMatchedRoutes = this.routes.filter(route => route.method === this.getMethod(method));
+        for (const route of verbMatchedRoutes) {
+            const urlSegment = UrlParser.getURLSegment(route.url);
+            if (url.startsWith(urlSegment)) {
+                return route;
+            }
+        }
+
+        throw `RouteNotFound: ${method} ${url}`;
     }
 
     private static getMethod(method: string): HttpRequestMethod {

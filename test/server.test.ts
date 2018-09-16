@@ -3,14 +3,16 @@ import 'jest';
 
 import { AppServer } from '../src/core/server/server';
 import { Application } from '../src/app';
+import { Configuration } from '../src/configuration/Configuration';
 
 describe('GET /', () => {
   let app;
   let application;
   const request = supertest;
-  beforeEach(() => {
+  beforeEach(async () => {
     application = new Application();
-    app = new AppServer().getServer();
+    const config = await Configuration.getConfiguration();
+    app = new AppServer(config).getServer();
   });
 
   it('should respond with hello world', (done) => {

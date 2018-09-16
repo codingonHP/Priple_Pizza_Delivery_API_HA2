@@ -5,6 +5,8 @@ import { HttpResponse } from '../server/httpResponse';
 import { Route } from '../router/route';
 import { IMiddleware } from '../middlewares/IMiddleware';
 import { IncomingMessage, ServerResponse } from 'http';
+import { IConfiguration } from '../../configuration/IConfiguration';
+import { UrlParser } from '../router/url.parser';
 
 export class RequestHandler {
     private httpRequest: HttpRequest;
@@ -15,18 +17,19 @@ export class RequestHandler {
         this.httpResponse = new HttpResponse(response);
     }
 
-    async handleRequest() {
+    async handleRequest(config: IConfiguration) {
         let controllerName = '';
         const route = AppRouter.findRoute(this.httpRequest.request.method, this.httpRequest.request.url);
         if (route) {
             controllerName = route.controller;
         } else {
-            throw('RouteNotFound');
+            throw(`RouteNotFound: ${this.httpRequest.request.method} : ${this.httpRequest.request.url}`);
         }
 
-        const controller = ControllerFactory.getController(controllerName);
+        const controller = ControllerFactory.getController(controllerName, config);
         const action = controller[this.httpRequest.request.method.toLowerCase()].bind(controller);
         await this.runMiddlewares(route, this.httpRequest, this.httpResponse);
+        this.httpRequest.query = UrlParser.parseUrl(route.url, this.httpRequest.request.url).queryParam;
         action(this.httpRequest, this.httpResponse);
     }
 

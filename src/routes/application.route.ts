@@ -14,5 +14,18 @@ export class ApplicationRoutes {
         method: HttpRequestMethod.POST,
         controller: 'user.controller',
         middlewares: [new RequestPayloadMiddleware()],
-    }];
+    },
+    {
+        url: '/api/users/:id',
+        method: HttpRequestMethod.DELETE,
+        controller: 'user.controller',
+        middlewares: [],
+    },
+    {
+        url: '/api/users/:id',
+        method: HttpRequestMethod.PUT,
+        controller: 'user.controller',
+        middlewares: [new RequestPayloadMiddleware()],
+    },
+    ];
 }

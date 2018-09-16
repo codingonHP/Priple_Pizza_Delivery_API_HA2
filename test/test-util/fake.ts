@@ -1,6 +1,7 @@
 import { IDatabase } from '../../src/contract/IDatabase';
 import { IConfiguration } from '../../src/configuration/IConfiguration';
 import { DatabaseConfiguration } from '../../src/configuration/DatabaseConfiguration';
+import { Server } from '../../src/configuration/Server';
 
 export class Fake {
     static getFakeDatabase(fakeDbImpl?: IDatabase): IDatabase {
@@ -48,6 +49,7 @@ class FakeDatabase implements IDatabase {
 }
 
 class FakeConfiguration implements IConfiguration {
+    server: Server;
     database: DatabaseConfiguration = new DatabaseConfiguration();
     environment: string = '';
 
@@ -55,6 +57,9 @@ class FakeConfiguration implements IConfiguration {
         this.database.name = 'pizza';
         this.database.port = '1001';
         this.database.server = 'localhost';
+        this.server = new Server();
+        this.server.port = '1000';
+        this.server.host = 'fakeHost';
     }
 }
 
