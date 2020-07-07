@@ -78,6 +78,6 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "npm": "^6.13.4"
+    "npm": "^6.14.6"
   }
 }
