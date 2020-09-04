@@ -68,7 +68,7 @@
     "concurrently": "^4.0.1",
     "jest": "^23.5.0",
     "mock-fs": "^4.6.0",
-    "mongodb": "^3.1.4",
+    "mongodb": "^3.1.13",
     "nodemon": "^1.18.3",
     "sinon": "^6.1.5",
     "supertest": "^3.1.0",
